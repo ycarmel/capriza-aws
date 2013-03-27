@@ -54,7 +54,7 @@ To Download file metadata from S3
 
 To Compare a file to the S3 File
 
-    $ boolean = s3 <=> ('FILE_NAME')
+    $ if s3 == 'FILE_NAME'
 
 
 ## Contributing
