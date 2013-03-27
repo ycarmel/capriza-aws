@@ -20,9 +20,9 @@ Or install it yourself as:
 
 To use first create a config.yaml file with the following content
 
-access_key_id: YOUR_ACCESS_KEY_ID
-secret_access_key: YOUR_SECRET_ACCESS_KEY
-s3_endpoint: YOUR_S3_ENDPOINT
+    access_key_id: YOUR_ACCESS_KEY_ID
+    secret_access_key: YOUR_SECRET_ACCESS_KEY
+    s3_endpoint: YOUR_S3_ENDPOINT
 
 Once configured run the following to instantiate:
 
