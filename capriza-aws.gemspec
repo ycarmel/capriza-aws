@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["alon@alonbecker.com"]
   gem.description   = %q{AWS Helper Files}
   gem.summary       = %q{AWS Helper Files}
-  gem.homepage      = ""
+  gem.homepage      = "http://rubygems.org/gems/capriza-aws"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
