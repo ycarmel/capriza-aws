@@ -42,6 +42,7 @@ To Download:
 
     $ data = s3.download
 or
+
     $ File.write('FILE_NAME', s3.download)
 
 To Upload file metadata to S3
