@@ -1,6 +1,7 @@
 require "capriza-aws/version"
 require 'rubygems'
 require 'yaml'
+require 'json'
 require 'aws-sdk'
 
 module Capriza
@@ -12,7 +13,13 @@ module Capriza
         unless File.exist?(config_file)
           raise "Config file #{config_file} not found"
         end
-        config = YAML.load(File.read(config_file))
+        if File.extname(config_file) == '.yaml'
+          config = YAML.load(File.read(config_file))
+        elsif File.extname(config_file) == '.json'
+          config = JSON.load(File.read(config_file))
+        else
+          raise "Unrecognized file extension. Currently only support json and yaml"
+        end
         unless config.kind_of?(Hash)
           raise "Config file #{config_file} is formatted incorrectly. Please use the following format:" +
                     "access_key_id: YOUR_ACCESS_KEY_ID" +
