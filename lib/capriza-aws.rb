@@ -57,11 +57,7 @@ module Capriza
       def upload(data, make_public = false)
         @data = data
         @obj.write(@data)
-        if make_public
-          @obj.acl = :public_read
-        end
-      end
-
+        @obj.acl = :public_read if make_public
       end
 
       def download()
