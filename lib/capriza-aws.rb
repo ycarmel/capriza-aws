@@ -57,8 +57,10 @@ module Capriza
       def upload(data, make_public = false)
         @data = data
         @obj.write(@data)
-        @obj.acl = :public_read if make_public
-        @obj.content_type = 'application/zip'
+        metadata = @obj.head[:metadata]
+        content_type = "application/pdf"
+        @obj.copy_to(@obj.key, :metadata => metadata, :content_type => content_type)
+        @obj.acl = :public_read  if make_public
       end
 
       def download()
