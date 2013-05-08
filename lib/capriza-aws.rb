@@ -58,7 +58,7 @@ module Capriza
         @data = data
         @obj.write(@data)
         metadata = @obj.head[:metadata]
-        content_type = "application/pdf"
+        content_type = "application/zip"
         @obj.copy_to(@obj.key, :metadata => metadata, :content_type => content_type)
         @obj.acl = :public_read  if make_public
       end
