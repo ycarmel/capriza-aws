@@ -56,8 +56,9 @@ module Capriza
 
       def upload(data, make_public = false)
         @data = data
-        @obj.write(@data, options = {:content_type => 'application/zip'} )
+        @obj.write(@data)
         @obj.acl = :public_read if make_public
+        @obj.content_type = 'application/zip'
       end
 
       def download()
