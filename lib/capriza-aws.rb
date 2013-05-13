@@ -23,13 +23,13 @@ module Capriza
             raise "Config file #{config_file} not found"
           end
         elsif @config.kind_of?(Hash)
-           puts @config
-           unless @config.has_key?('access_key_id') and @config.has_key?('secret_access_key') and @config.has_key?('s3_endpoint')
+          puts @config
+          unless @config.has_key?('access_key_id') and @config.has_key?('secret_access_key') and @config.has_key?('s3_endpoint')
             raise "Configuration missing. need the following " +
                       "access_key_id: YOUR_ACCESS_KEY_ID " +
-                      "secret_access_key: YOUR_SECRET_ACCESS_KEY "  +
+                      "secret_access_key: YOUR_SECRET_ACCESS_KEY " +
                       "s3_endpoint: YOUR_S3_ENDPOINT "
-           end
+          end
         else
           raise("Unrecognized Format. Config can be an filename or Hash.")
         end
@@ -60,14 +60,14 @@ module Capriza
         metadata = @obj.head[:metadata]
         content_type = "application/zip"
         @obj.copy_to(@obj.key, :metadata => metadata, :content_type => content_type)
-        @obj.acl = :public_read  if make_public
+        @obj.acl = :public_read if make_public
       end
 
       def download()
         @data = @obj.read
       end
 
-      def set_metadata(key,value)
+      def set_metadata(key, value)
         @obj.metadata[key] = value
       end
 
@@ -79,11 +79,32 @@ module Capriza
         unless File.exist?(local_file)
           raise "File #{local_file} does not exist"
         end
-        @obj.etag.gsub(/\"/,"") == Digest::MD5.hexdigest(File.read(local_file))
+        @obj.etag.gsub(/\"/, "") == Digest::MD5.hexdigest(File.read(local_file))
       end
 
     end
 
   end
 
+  class S3upload
+    def initialize(bucket, local_folder_name, bucket_folder_name, config, make_public = false)
+      S3connect.new(config)
+      s3 = AWS::S3.new()
+
+      b = s3.buckets[bucket_name]
+      b
+
+      Dir.foreach(local_folder_name) do |item|
+        next if item == '.' or item == '..'
+
+        basename = File.basename(item)
+        o = b.objects[basename]
+        o.write(:file => item)
+        o.acl = :public_read if make_public
+        puts item
+
+      end
+
+    end
+  end
 end
