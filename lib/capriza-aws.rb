@@ -87,14 +87,13 @@ module Capriza
   end
 
   class S3upload
-    def initialize(bucket, local_folder_name, bucket_folder_name, config, make_public = false)
+    def initialize(bucket, folder_name, config, make_public = false)
       S3connect.new(config)
       s3 = AWS::S3.new()
 
       b = s3.buckets[bucket_name]
-      b
 
-      Dir.foreach(local_folder_name) do |item|
+      Dir.foreach(folder_name) do |item|
         next if item == '.' or item == '..'
 
         basename = File.basename(item)
