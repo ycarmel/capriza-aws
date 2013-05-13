@@ -83,27 +83,27 @@ module Capriza
       end
 
     end
+    class S3upload
+      def initialize(bucket, folder_name, config, make_public = false)
+        S3connect.new(config)
+        s3 = AWS::S3.new()
 
-  end
+        b = s3.buckets[bucket_name]
 
-  class S3upload
-    def initialize(bucket, folder_name, config, make_public = false)
-      S3connect.new(config)
-      s3 = AWS::S3.new()
+        Dir.foreach(folder_name) do |item|
+          next if item == '.' or item == '..'
 
-      b = s3.buckets[bucket_name]
+          basename = File.basename(item)
+          o = b.objects[basename]
+          o.write(:file => item)
+          o.acl = :public_read if make_public
+          puts item
 
-      Dir.foreach(folder_name) do |item|
-        next if item == '.' or item == '..'
-
-        basename = File.basename(item)
-        o = b.objects[basename]
-        o.write(:file => item)
-        o.acl = :public_read if make_public
-        puts item
+        end
 
       end
-
     end
+
   end
+
 end
