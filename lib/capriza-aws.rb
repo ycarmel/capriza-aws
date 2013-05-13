@@ -88,7 +88,7 @@ module Capriza
         S3connect.new(config)
         s3 = AWS::S3.new()
 
-        b = s3.buckets[bucket_name]
+        b = s3.buckets[bucket]
 
         Dir.foreach(folder_name) do |item|
           next if item == '.' or item == '..'
