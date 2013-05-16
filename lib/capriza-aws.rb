@@ -97,7 +97,7 @@ module Capriza
       def upload
         Find.find(@options[:dir]).each do |file|
           puts "starting upload of #{file} to #{@options[:bucket]}"
-          @s3.buckets[@options[:bucket]].objects[file].write(File.read(file), @options[:file_options] || {} ) unless File.directory?(file) || raise("File #{file} cannot be uploaded to bucket #{@options[:bucket]}")
+          @s3.buckets[@options[:bucket]].objects[file].write(File.read(file), @options[:file_options] || {} ) unless File.directory?(file)
           puts "completed upload of #{file} to #{@options[:bucket]}"
         end
       end
