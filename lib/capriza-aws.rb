@@ -103,12 +103,8 @@ module Capriza
       end
 
       def delete
-        puts "deleting #{options['dir']}"
+        puts "deleting #{@options['dir']}"
         @s3.buckets[@options[:bucket]].objects.with_prefix(@options[:dir] + '/').delete_all
-      end
-
-      def rename (name)
-        AWS
       end
 
     end
