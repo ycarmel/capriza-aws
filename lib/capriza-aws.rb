@@ -3,6 +3,7 @@ require 'rubygems'
 require 'yaml'
 require 'json'
 require 'aws-sdk'
+require 'find'
 
 module Capriza
   module Aws
@@ -83,25 +84,24 @@ module Capriza
       end
 
     end
-    class S3upload
-      def initialize(bucket, folder_name, config, make_public = false)
-        S3connect.new(config)
-        s3 = AWS::S3.new()
 
-        b = s3.buckets[bucket]
 
-        Dir.foreach(folder_name) do |item|
-          next if item == '.' or item == '..'
+    class S3Upload
 
-          basename = File.basename(item)
-          o = b.objects[basename]
-          o.write(:file => item)
-          o.acl = :public_read if make_public
-          puts item
-
-        end
-
+      def initialize(options = {})
+        AWS.config(options[:config])
+        @s3 = AWS::S3.new()
+        @options = options
       end
+
+      def upload
+        Find.find(@options[:dir]).each { |file| @s3.buckets[@options[:bucket]].objects[file].write(File.read(file), @options[:file_options] || {} ) unless File.directory?(file) }
+      end
+
+      def delete
+        @s3.buckets[@options[:bucket]].objects.with_prefix(@options[:dir] + '/').delete_all
+      end
+
     end
 
   end
