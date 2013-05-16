@@ -95,11 +95,20 @@ module Capriza
       end
 
       def upload
-        Find.find(@options[:dir]).each { |file| @s3.buckets[@options[:bucket]].objects[file].write(File.read(file), @options[:file_options] || {} ) unless File.directory?(file) }
+        Find.find(@options[:dir]).each do |file|
+          puts "starting upload of #{file} to #{@options[:bucket]}"
+          @s3.buckets[@options[:bucket]].objects[file].write(File.read(file), @options[:file_options] || {} ) unless File.directory?(file) || raise("File #{file} cannot be uploaded to bucket #{@options[:bucket]}")
+          puts "completed upload of #{file} to #{@options[:bucket]}"
+        end
       end
 
       def delete
+        puts "deleting #{options['dir']}"
         @s3.buckets[@options[:bucket]].objects.with_prefix(@options[:dir] + '/').delete_all
+      end
+
+      def rename (name)
+        AWS
       end
 
     end
