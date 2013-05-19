@@ -90,7 +90,8 @@ module Capriza
 
       def initialize(options = {})
         @options = options
-        AWS::S3::Base.establish_connection!(access_key_id: @options[:access_key_id], secret_access_key: @options[:secret_access_key] )
+        S3connect.new(@options[:config])
+        s3 = AWS::S3.new()
         @s3 = AWS::S3.new(:region => @options[:s3_endpoint])
       end
 
