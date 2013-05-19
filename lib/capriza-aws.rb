@@ -86,13 +86,15 @@ module Capriza
     end
 
 
+    require 'aws-sdk'
+    require 'find'
+
     class S3Upload
 
       def initialize(options = {})
         @options = options
-        S3connect.new(@options[:config])
-        s3 = AWS::S3.new()
-        @s3 = AWS::S3.new(:region => @options[:s3_endpoint])
+        AWS.config(@options[:config])
+        @s3 = AWS::S3.new(:s3_endpoint => @options[:config]['s3_endpoint'])
       end
 
       def upload
