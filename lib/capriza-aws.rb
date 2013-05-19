@@ -89,11 +89,9 @@ module Capriza
     class S3Upload
 
       def initialize(options = {})
-
-        AWS::S3::DEFAULT_HOST.replace options[:s3_endpoint]
-        AWS::S3::Base.establish_connection!(access_key_id: options[:access_key_id], secret_access_key: options[:secret_access_key] )
-        @s3 = AWS::S3.new()
         @options = options
+        AWS::S3::Base.establish_connection!(access_key_id: @options[:access_key_id], secret_access_key: @options[:secret_access_key] )
+        @s3 = AWS::S3.new(:region => @options[:s3_endpoint])
       end
 
       def upload
